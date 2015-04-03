@@ -1,0 +1,30 @@
+{
+  "name": "gulp-typescript-angular",
+  "version": "0.0.1",
+  "description": "gulp library to develop type-safe angularjs using TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/takeshi/gulp-typescript-angular.git"
+  },
+  "keywords": [
+    "angularjs",
+    "typescript",
+    "gulp"
+  ],
+  "author": "takeshi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/takeshi/gulp-typescript-angular/issues"
+  },
+  "homepage": "https://github.com/takeshi/gulp-typescript-angular",
+  "devDependencies": {
+    "falafel": "^1.0.1",
+    "gulp": "^3.8.11",
+    "gulp-typescript": "^2.5.0",
+    "through2": "^0.6.3"
+  }
+}
