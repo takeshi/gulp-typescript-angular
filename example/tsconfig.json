@@ -13,11 +13,11 @@
         "./typings/**/*.ts"
     ],
     "files": [
-        "./src/sample.ts",
-        "./src/sample0.ts",
-        "./src/sample1.ts",
-        "./src/sample2.ts",
-        "./src/sample3.ts",
+        "./src/sample-controller.ts",
+        "./src/sample-ctrl.ts",
+        "./src/sample-directive.ts",
+        "./src/sample-manager-provider.ts",
+        "./src/sample-service.ts",
         "./typings/angularjs/angular.d.ts",
         "./typings/jquery/jquery.d.ts"
     ],

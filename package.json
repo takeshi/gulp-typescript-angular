@@ -21,7 +21,7 @@
     "url": "https://github.com/takeshi/gulp-typescript-angular/issues"
   },
   "homepage": "https://github.com/takeshi/gulp-typescript-angular",
-  "devDependencies": {
+  "dependencies": {
     "falafel": "^1.0.1",
     "gulp": "^3.8.11",
     "gulp-typescript": "^2.5.0",
