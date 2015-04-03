@@ -1,13 +1,17 @@
 var sample;
 (function (sample) {
     var SampleDirective = (function () {
-        function SampleDirective() {
+        function SampleDirective($compile) {
+            this.$compile = $compile;
+            this.restrict = 'A';
             this.templateUrl = '/sample.html';
             this.scope = {
                 test: '='
             };
         }
+        SampleDirective.prototype.link = function (scope, element) {
+        };
         return SampleDirective;
     })();
-angular.module('sample').directive('sample',[function(){return new SampleDirective(arguments);}]);
+angular.module('sample').directive('sample',['$compile',function(){return new SampleDirective(arguments);}]);
 })(sample || (sample = {}));
