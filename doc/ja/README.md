@@ -1,4 +1,7 @@
-# Motivation
+# gulp-typescript-angular
+TypeScriptでクラスベースでAngularJSの開発を行うためのgulp plugin.
+
+## Motivation
 [「Typescriptで書いたAngularJSのControllerをgulpで自動登録する」](http://qiita.com/takeshi@github/items/31f6dfdb2bcbf236bc6e)を参照
 
 ## npm パッケージ
