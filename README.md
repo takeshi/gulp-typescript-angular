@@ -25,12 +25,6 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest('./dist'));
 });
 ```
-
-## Table of Contents
-* [Install](#install)
-* [Usage](#usage)
-	- [JavaScript](#javascript)
-
 ## Example
 ### Controller
 #### TypeScript
