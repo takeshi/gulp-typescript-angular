@@ -1,5 +1,5 @@
-# TypescriptのクラスをGulpを使ってAngularJSに自動登録する
-[前回の「Typescriptで書いたAngularJSのControllerをgulpで自動登録する」](http://qiita.com/takeshi@github/items/31f6dfdb2bcbf236bc6e)を汎用化 & gulpのプラグイン化しました。Controller だけでなく、Service や Provider, Directive も TypeScript のクラスとして作成すると、AngularJSのモジュールに自動登録することができます。
+# Motivation
+[「Typescriptで書いたAngularJSのControllerをgulpで自動登録する」](http://qiita.com/takeshi@github/items/31f6dfdb2bcbf236bc6e)を参照
 
 ## npm パッケージ
 [gulp-typescript-angular](https://www.npmjs.com/package/gulp-typescript-angular)
