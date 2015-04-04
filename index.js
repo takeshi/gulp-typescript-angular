@@ -7,7 +7,7 @@ module.exports = function angularify(opts) {
   opts = opts || {};
 
   if(typeof opts.ignore === 'undefined'){
-    opts.ignore = /\$.*/;
+    opts.ignore = /^\$/;
   }
 
   if(typeof opts.moduleName === 'undefined'){

@@ -1,16 +1,17 @@
 var sample;
 (function (sample) {
     var SampleManagerProvider = (function () {
-        function SampleManagerProvider() {
+        function SampleManagerProvider($q) {
         }
         SampleManagerProvider.prototype.$get = function () {
-            return new $SampleManager();
+            return new $SampleManager(this);
         };
         return SampleManagerProvider;
     })();
-angular.module('sample').provider('sampleManager',[SampleManagerProvider]);
+angular.module('sample').provider('sampleManager',['$q',SampleManagerProvider]);
     var $SampleManager = (function () {
-        function $SampleManager() {
+        function $SampleManager(provider) {
+            this.provider = provider;
         }
         return $SampleManager;
     })();

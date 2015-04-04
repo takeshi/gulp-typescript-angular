@@ -1,15 +1,20 @@
 module sample {
 
     class SampleDirective {
+
         restrict = 'A'
+
         templateUrl = '/sample.html'
+
         scope = {
-            test: '='
+            text: '='
         }
+
         constructor(public $compile:angular.ICompileService){
         }
 
-        link (scope:angular.IScope, element:JQuery) {
+
+        link (scope:angular.IScope, element:JQuery,attr:angular.IAttributes) {
 
         }
 

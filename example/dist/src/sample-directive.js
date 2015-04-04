@@ -6,10 +6,10 @@ var sample;
             this.restrict = 'A';
             this.templateUrl = '/sample.html';
             this.scope = {
-                test: '='
+                text: '='
             };
         }
-        SampleDirective.prototype.link = function (scope, element) {
+        SampleDirective.prototype.link = function (scope, element, attr) {
         };
         return SampleDirective;
     })();
