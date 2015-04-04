@@ -150,7 +150,7 @@ angular.module('sample').provider('sampleManager',[SampleManagerProvider]);
 
 ### Directive
 If class name matches /Directive$/, gulp-typescript-angular add directive instantination function,<code>angular.module('sample').directive('sample',['$compile',function(){return new SampleDirective(arguments);}]);</code>, after class declaration.
-Using directive class instance , Directive parameter is directive class's field variable.
+Using directive class instance , Directive parameter is directive class's field.
 
 #### TypeScript
 ```typescript
