@@ -1,15 +1,26 @@
 # gulp-typescript-angular
-> automatic register TypeScript classes to [AngularJS](http://angularjs.org/) modules
+gulp plugin for class-based development in AngularJS with TypeScript.
+This make TypeScript classes add [AngularJS](http://angularjs.org/) registration codes.
 
-## Install
-Install with [npm](https://npmjs.org/package/gulp-typescript-angular)
-```bash
-$ npm install gulp-typescript-angular
-```
+## Motivation
+AngularJS and TypeScript works well with each other.
+TypeScript is good langulage for class-based programing.
+
+But TypeScript class codes must have glue codes to work with AngularJS.
+This gulp plugin can remove the glue codes by to add generated angularjs code using gulp script.
 
 ## Usage
 
-### JavaScript
+### Install
+Install with [npm](https://npmjs.org/package/gulp-typescript-angular)
+
+```
+$ npm install gulp-typescript-angular
+```
+
+### modify gulpfile.js
+add gulp-typescript-angular plugin to gulp pipe after typescript plugin.
+
 ```javascript
 var gulp = require('gulp');
 
@@ -25,8 +36,13 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest('./dist'));
 });
 ```
+### Options
+ - moduleName : AngularJS Module Name
+
 ## Example
 ### Controller
+If class name matches <code> /Controller$/</code> or <code>/Ctrl$/</code>, gulp-typescript-angular add controller registration code,<code>angular.module('sample').controller('sampleController',['$scope',SampleController]);</code>,after class declaration.
+
 #### TypeScript
 ```typescript
 module sample {
@@ -55,6 +71,10 @@ angular.module('sample').controller('sampleController',['$scope',SampleControlle
 ```
 
 ### Service
+
+If class name matches <code> /Service$/</code> or <code>/Manager$/</code>, gulp-typescript-angular add service registration code,<code>angular.module('sample').service('sampleService',['$q',SampleService]);</code>, after class declaration.
+
+
 #### TypeScript
 ```typescript
 module sample {
@@ -83,6 +103,11 @@ angular.module('sample').service('sampleService',['$q',SampleService]);
 ```
 
 ### Provider
+
+If class name matches <code> /Provider$/</code> , gulp-typescript-angular add provider registration code,<code>angular.module('sample').provider('sampleManager',[SampleManagerProvider]);</code>, after class declaration.
+If class name start with '$', gulp-typescript-angular don't add the angularjs registration code.
+
+
 #### TypeScript
 ```typescript
 module sample {
@@ -124,6 +149,9 @@ angular.module('sample').provider('sampleManager',[SampleManagerProvider]);
 ```
 
 ### Directive
+If class name matches /Directive$/, gulp-typescript-angular add directive instantination function,<code>angular.module('sample').directive('sample',['$compile',function(){return new SampleDirective(arguments);}]);</code>, after class declaration.
+Using directive class instance , Directive parameter is directive class's field variable.
+
 #### TypeScript
 ```typescript
 module sample {
