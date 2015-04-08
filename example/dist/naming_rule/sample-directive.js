@@ -8,10 +8,9 @@ var sample;
             this.scope = {
                 text: '='
             };
-        }
+        }/*<auto_generate>*/SampleDirective.$inject = ['$compile'];SampleDirective.$componentName = 'sample'/*</auto_generate>*/
         SampleDirective.prototype.link = function (scope, element, attr) {
         };
         return SampleDirective;
-    })();
-angular.module('sample').directive('sample',['$compile',function(){return new SampleDirective(arguments);}]);
+    })();/*<auto_generate>*/angular.module('sample').directive('sample',['$compile',function(){return new SampleDirective(arguments);}]);/*</auto_generate>*/
 })(sample || (sample = {}));

@@ -13,11 +13,16 @@
         "./typings/**/*.ts"
     ],
     "files": [
-        "./src/sample-controller.ts",
-        "./src/sample-ctrl.ts",
-        "./src/sample-directive.ts",
-        "./src/sample-manager-provider.ts",
-        "./src/sample-service.ts",
+        "./src/decorator/annotations.ts",
+        "./src/decorator/sample-controller.ts",
+        "./src/decorator/sample-directive.ts",
+        "./src/decorator/sample-manager-provider.ts",
+        "./src/decorator/sample-service.ts",
+        "./src/naming_rule/sample-controller.ts",
+        "./src/naming_rule/sample-ctrl.ts",
+        "./src/naming_rule/sample-directive.ts",
+        "./src/naming_rule/sample-manager-provider.ts",
+        "./src/naming_rule/sample-service.ts",
         "./typings/angularjs/angular.d.ts",
         "./typings/jquery/jquery.d.ts"
     ],

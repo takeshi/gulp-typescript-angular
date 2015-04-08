@@ -16,9 +16,6 @@ module.exports = function angularify(opts) {
   if(typeof opts.firstLowerCase === 'undefined'){
     opts.firstLowerCase = true;
   }
-  if(typeof opts.registration === 'undefined'){
-    opts.registration = true;
-  }
 
   if(typeof opts.patterns === 'undefined'){
     var DEFAULT_PATTERNS = [
@@ -31,6 +28,16 @@ module.exports = function angularify(opts) {
       {pattern:/Directive$/,type:'directive',removePattern:true,firstLowerCase:true}
     ];
     opts.patterns = DEFAULT_PATTERNS;
+  }
+
+  if(typeof opts.decoratorPatterns === 'undefined'){
+    var DEFAULT_PATTERNS = [
+      {pattern:/Controller$/,func:'Controller',firstLowerCase:false},
+      {pattern:/Service$/,func:'Service'},
+      {pattern:/Provider$/,func:'Provider',removePattern:true},
+      {pattern:/Directive$/,func:'Directive',removePattern:true,firstLowerCase:true}
+    ];
+    opts.decoratorPatterns = DEFAULT_PATTERNS;
   }
 
   // creating a stream through which each file will pass
@@ -68,20 +75,48 @@ function findClassDeclaration(node,opts){
        if(opts.ignore && decl.id.name.match(opts.ignore)){
          return;
        }
-       opts.patterns.forEach(function(pattern){
-         if(decl.id.name.match(pattern.pattern)){
-          var firstLowerCase = pattern.firstLowerCase;
-          if(typeof firstLowerCase === 'undefined'){
-            firstLowerCase = opts.firstLowerCase;
+       if(!decl.init.callee.body){
+        return;
+       }
+       if(opts.decorator){
+        var decorators = findDecorator(decl);
+        decorators.forEach(function(decorator){
+         opts.decoratorPatterns.forEach(function(decoratorPattern){
+          if(decorator === opts.decorator + '.' + decoratorPattern.func){
+           addAngularModule(node,decl,opts,decoratorPattern);
           }
-          addAngularModule(node,decl,opts,opts.moduleName,pattern.type,pattern.pattern,pattern.removePattern,firstLowerCase);
+         });
+        });
+       }
+       else{
+        opts.patterns.forEach(function(pattern){
+         if(decl.id.name.match(pattern.pattern)){
+          addAngularModule(node,decl,opts,pattern);
          }
-     });
+        });
+      }
  }
 }
+function findDecorator(decl){
+ var body = decl.init.callee.body;
+ var decoratorBlock = body.body[body.body.length-2];
+ var decorators = decoratorBlock.expression.right;
+ return decorators.arguments[0].elements.map(function(element){
+  return element.source();
+ })
+}
 
+function addAngularModule(node,decl,opts,ptn){
+  var moduleName = opts.moduleName,
+      type = ptn.type,
+      pattern = ptn.pattern,
+      removePattern = ptn.removePattern
 
-function addAngularModule(node,decl,opts,moduleName,type,pattern,removePattern,firstLowerCase){
+  var firstLowerCase = ptn.firstLowerCase;
+  if(typeof firstLowerCase === 'undefined'){
+    firstLowerCase = opts.firstLowerCase;
+  }
+
   var constructor = decl.init.callee.body.body[0];
   var constructorParams = constructor.params.map(function(param){
     return '\''+param.name + '\'';
@@ -101,31 +136,6 @@ function addAngularModule(node,decl,opts,moduleName,type,pattern,removePattern,f
 
   add$inject(decl.init.callee.body,className,conponentName,constructor,constructorParams);
 
-  if(!opts.registration){
-    return;
-  }
-
-  if(type === 'directive'){
-    createModule();
-  }
-  else if(type === 'value'){
-    createModule();
-  }
-  else if(type === 'constant'){
-    createModule();
-  }
-  else {
-    functionModule()
-  }
-
-  function functionModule(){
-    var source = '/*<auto_generate>*/';
-    source += 'angular.module(\''+ moduleName +'\')';
-    source += '.' + type + '(\''+conponentName+'\','+className+');';
-    source +='/*</auto_generate>*/';
-    node.update(node.source()+source);
-  }
-
   function add$inject(body,className,componentName,constructor,constructorParams){
     if(!constructorParams){
       return;
@@ -138,13 +148,39 @@ function addAngularModule(node,decl,opts,moduleName,type,pattern,removePattern,f
     constructor.update(constructor.source() + source);
   }
 
+  if(opts.decorator){
+    return;
+  }
+
+  var source =  '/*<auto_generate>*/';
+  if(type === 'directive'){
+   source += createModule();
+  }
+  else if(type === 'value'){
+   source += createModule();
+  }
+  else if(type === 'constant'){
+   source += createModule();
+  }
+  else {
+   source += functionModule()
+  }
+  source +='/*</auto_generate>*/';
+  node.update(node.source() + source);
+
+  function functionModule(){
+   var source = '';
+    source += 'angular.module(\''+ moduleName +'\')';
+    source += '.' + type + '(\''+conponentName+'\','+className+');';
+    return source;
+  }
+
   function createModule(){
     constructorParams.push('function(){return new ' +className +'(arguments);}');
-    var source = '/*<auto_generate>*/';
+    var source = '';
     source += 'angular.module(\''+ moduleName +'\')';
     source += '.' + type + '(\''+conponentName+'\',['+constructorParams.join('\,')+']);';
-    source    += '/*</auto_generate>*/';
-    node.update(node.source()+source);
+    return source;
   }
 
 }
