@@ -1,6 +1,6 @@
 {
   "name": "gulp-typescript-angular",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "gulp library to develop type-safe angularjs using TypeScript",
   "main": "index.js",
   "scripts": {

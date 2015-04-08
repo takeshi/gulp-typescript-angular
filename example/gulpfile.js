@@ -15,7 +15,7 @@ gulp.task('scripts-decorator', function () {
       target:'es5'
     }))
     .pipe(typescriptAngular({
-      decorator:'sample'
+      decoratorModuleName:'sample'
     }))
     .pipe(gulp.dest('./dist/decorator'));
 });

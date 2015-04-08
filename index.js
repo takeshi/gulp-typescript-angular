@@ -82,7 +82,7 @@ function findClassDeclaration(node,opts){
         var decorators = findDecorator(decl);
         decorators.forEach(function(decorator){
          opts.decoratorPatterns.forEach(function(decoratorPattern){
-          if(decorator === opts.decorator + '.' + decoratorPattern.func){
+          if(decorator === opts.decoratorModuleName + '.' + decoratorPattern.func){
            addAngularModule(node,decl,opts,decoratorPattern);
           }
          });
@@ -148,7 +148,7 @@ function addAngularModule(node,decl,opts,ptn){
     constructor.update(constructor.source() + source);
   }
 
-  if(opts.decorator){
+  if(opts.decoratorModuleName){
     return;
   }
 
