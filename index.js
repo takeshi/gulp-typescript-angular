@@ -16,10 +16,14 @@ module.exports = function angularify(opts) {
   if(typeof opts.firstLowerCase === 'undefined'){
     opts.firstLowerCase = true;
   }
+  if(typeof opts.registration === 'undefined'){
+    opts.registration = true;
+  }
+
   if(typeof opts.patterns === 'undefined'){
     var DEFAULT_PATTERNS = [
-      {pattern:/Controller$/,type:'controller'},
-      {pattern:/Ctrl$/,type:'controller'},
+      {pattern:/Controller$/,type:'controller',firstLowerCase:false},
+      {pattern:/Ctrl$/,type:'controller',firstLowerCase:false},
       {pattern:/Service$/,type:'service'},
       {pattern:/Manager$/,type:'service'},
       {pattern:/ServiceDelegate$/,type:'service'},
@@ -70,19 +74,24 @@ function findClassDeclaration(node,opts){
           if(typeof firstLowerCase === 'undefined'){
             firstLowerCase = opts.firstLowerCase;
           }
-          addAngularModule(node,decl,opts.moduleName,pattern.type,pattern.pattern,pattern.removePattern,firstLowerCase);
+          addAngularModule(node,decl,opts,opts.moduleName,pattern.type,pattern.pattern,pattern.removePattern,firstLowerCase);
          }
      });
  }
 }
 
-function addAngularModule(node,decl,moduleName,type,pattern,removePattern,firstLowerCase){
+
+function addAngularModule(node,decl,opts,moduleName,type,pattern,removePattern,firstLowerCase){
   var constructor = decl.init.callee.body.body[0];
   var constructorParams = constructor.params.map(function(param){
     return '\''+param.name + '\'';
   });
+
+
   var className = decl.id.name;
   var conponentName = className;
+
+
   if(removePattern){
     conponentName = decl.id.name.replace(pattern,'');
   }
@@ -90,20 +99,10 @@ function addAngularModule(node,decl,moduleName,type,pattern,removePattern,firstL
     conponentName = conponentName.toLowerCase()[0] + conponentName.substring(1);
   }
 
-  function functionModule(){
-    constructorParams.push(className);
-    var source = '\n';
-    source += 'angular.module(\''+ moduleName +'\')';
-    source += '.' + type + '(\''+conponentName+'\',['+constructorParams.join('\,')+']);';
-    node.update(node.source()+source);
-  }
+  add$inject(decl.init.callee.body,className,conponentName,constructor,constructorParams);
 
-  function createModule(){
-    constructorParams.push('function(){return new ' +className +'(arguments);}');
-    var source = '\n';
-    source += 'angular.module(\''+ moduleName +'\')';
-    source += '.' + type + '(\''+conponentName+'\',['+constructorParams.join('\,')+']);';
-    node.update(node.source()+source);
+  if(!opts.registration){
+    return;
   }
 
   if(type === 'directive'){
@@ -118,4 +117,34 @@ function addAngularModule(node,decl,moduleName,type,pattern,removePattern,firstL
   else {
     functionModule()
   }
+
+  function functionModule(){
+    var source = '/*<auto_generate>*/';
+    source += 'angular.module(\''+ moduleName +'\')';
+    source += '.' + type + '(\''+conponentName+'\','+className+');';
+    source +='/*</auto_generate>*/';
+    node.update(node.source()+source);
+  }
+
+  function add$inject(body,className,componentName,constructor,constructorParams){
+    if(!constructorParams){
+      return;
+    }
+    var source = '/*<auto_generate>*/';
+     source   += className + '.$inject = ['+constructorParams.join('\,')+'];';
+    source    += className + '.$componentName = \'' + componentName + '\'';
+    source    += '/*</auto_generate>*/';
+
+    constructor.update(constructor.source() + source);
+  }
+
+  function createModule(){
+    constructorParams.push('function(){return new ' +className +'(arguments);}');
+    var source = '/*<auto_generate>*/';
+    source += 'angular.module(\''+ moduleName +'\')';
+    source += '.' + type + '(\''+conponentName+'\',['+constructorParams.join('\,')+']);';
+    source    += '/*</auto_generate>*/';
+    node.update(node.source()+source);
+  }
+
 }
