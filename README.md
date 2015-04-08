@@ -72,7 +72,7 @@ gulp.task('scripts', function () {
 
 ## 1.3 Examples
 ### 1.3.1 Controller
-If class is annotated <code> @sample.Controller</code>, gulp-typescript-angular add $inject parameter annotation code,<code>SampleController.$inject = ['$scope'];SampleController.$componentName = 'SampleController'</code>,after class constructor declaration.
+If class is annotated by <code>@sample.Controller</code>, gulp-typescript-angular add $inject parameter annotation code,<code>SampleController.$inject = ['$scope'];SampleController.$componentName = 'SampleController'</code>,after class constructor declaration.
 
 #### TypeScript
 ```typescript
@@ -117,7 +117,7 @@ var sample;
 ```
 
 ### 1.3.2 Service
-If class is annotated <code> @sample.Service</code>, gulp-typescript-angular add $inject parameter annotation code,<code>SampleService.$inject = ['$q'];SampleService.$componentName = 'sampleService'</code>,after class constructor declaration.
+If class is annotated by <code>@sample.Service</code>, gulp-typescript-angular add $inject parameter annotation code,<code>SampleService.$inject = ['$q'];SampleService.$componentName = 'sampleService'</code>,after class constructor declaration.
 
 #### TypeScript
 ```typescript
