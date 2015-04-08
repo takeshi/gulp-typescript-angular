@@ -161,7 +161,7 @@ var sample;
 ```
 
 ### 1.3.3 Provider
-If class is annonated by <code> @sample.Provider</code> , gulp-typescript-angular add $inject parameter annotation code,<code>/*<auto_generate>*/SampleManagerProvider.$inject = ['$q'];SampleManagerProvider.$componentName = 'sampleManager'/*</auto_generate>*/</code>, after class constructor  declaration.
+If class is annonated by <code>@sample.Provider</code> , gulp-typescript-angular add $inject parameter annotation code,<code>/*<auto_generate>*/SampleManagerProvider.$inject = ['$q'];SampleManagerProvider.$componentName = 'sampleManager'/*</auto_generate>*/</code>, after class constructor  declaration.
 
 #### TypeScript
 ```typescript
