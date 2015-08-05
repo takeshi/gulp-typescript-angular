@@ -117,7 +117,7 @@ function addAngularModule(node,decl,opts,ptn){
     firstLowerCase = opts.firstLowerCase;
   }
 
-  var constructor = decl.init.callee.body.body[0];
+  var constructor = decl.init.callee.body.body[0].type === 'FunctionDeclaration' ? decl.init.callee.body.body[0] : decl.init.callee.body.body[1];
   var constructorParams = constructor.params.map(function(param){
     return '\''+param.name + '\'';
   });
