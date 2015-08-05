@@ -176,7 +176,7 @@ function addAngularModule(node,decl,opts,ptn){
   }
 
   function createModule(){
-    constructorParams.push('function(){return new ' +className +'(arguments);}');
+    constructorParams.push('function(){return new (Function.prototype.bind.apply(' +className +',[null].concat(Array.prototype.slice.call(arguments))));}');
     var source = '';
     source += 'angular.module(\''+ moduleName +'\')';
     source += '.' + type + '(\''+conponentName+'\',['+constructorParams.join('\,')+']);';
