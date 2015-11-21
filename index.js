@@ -117,7 +117,7 @@ function addAngularModule(node,decl,opts,ptn){
     firstLowerCase = opts.firstLowerCase;
   }
 
-  var constructor = decl.init.callee.body.body[0];
+  var constructor = decl.init.callee.body.body[0].type === 'FunctionDeclaration' ? decl.init.callee.body.body[0] : decl.init.callee.body.body[1];
   var constructorParams = constructor.params.map(function(param){
     return '\''+param.name + '\'';
   });
@@ -176,7 +176,7 @@ function addAngularModule(node,decl,opts,ptn){
   }
 
   function createModule(){
-    constructorParams.push('function(){return new ' +className +'(arguments);}');
+    constructorParams.push('function(){return new (Function.prototype.bind.apply(' +className +',[null].concat(Array.prototype.slice.call(arguments))));}');
     var source = '';
     source += 'angular.module(\''+ moduleName +'\')';
     source += '.' + type + '(\''+conponentName+'\',['+constructorParams.join('\,')+']);';
