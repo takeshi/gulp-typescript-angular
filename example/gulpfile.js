@@ -12,7 +12,8 @@ gulp.task('scripts-decorator', function () {
      './typings/**/*.d.ts'
     ])
     .pipe(typescript({
-      target:'es5'
+      target:'es5',
+      experimentalDecorators:true
     }))
     .pipe(typescriptAngular({
       decoratorModuleName:'sample'
@@ -27,7 +28,8 @@ gulp.task('scripts', function () {
      './typings/**/*.d.ts'
     ])
     .pipe(typescript({
-     target:'es5'
+     target:'es5',
+     experimentalDecorators:true
     }))
     .pipe(typescriptAngular({
       moduleName:'sample'

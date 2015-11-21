@@ -2,7 +2,7 @@ var sample;
 (function (sample) {
     var SampleManagerProvider = (function () {
         function SampleManagerProvider($q) {
-        }/*<auto_generate>*/SampleManagerProvider.$inject = ['$q'];SampleManagerProvider.$componentName = 'sampleManager'/*</auto_generate>*/
+        }/*<auto_generate>*/SampleManagerProvider.$inject = ['$q']; SampleManagerProvider.$componentName = 'sampleManager'/*</auto_generate>*/
         SampleManagerProvider.prototype.$get = function () {
             return new $SampleManager(this);
         };

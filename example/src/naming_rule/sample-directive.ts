@@ -1,6 +1,10 @@
 module sample {
 
-    class SampleDirective {
+    class AbstractDirective{
+        
+    }
+
+    class SampleDirective extends AbstractDirective {
 
         restrict = 'A'
 
@@ -11,6 +15,7 @@ module sample {
         }
 
         constructor(public $compile:angular.ICompileService){
+            super();
         }
 
 

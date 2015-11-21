@@ -6,14 +6,15 @@
         "declaration": false,
         "noImplicitAny": false,
         "removeComments": true,
-        "noLib": false
+        "noLib": false,
+        "experimentalDecorators": true
     },
     "filesGlob": [
         "./src/**/*.ts",
         "./typings/**/*.ts"
     ],
     "files": [
-        "./src/decorator/annotations.ts",
+        "./src/decorator/decorators.ts",
         "./src/decorator/sample-controller.ts",
         "./src/decorator/sample-directive.ts",
         "./src/decorator/sample-manager-provider.ts",
@@ -26,5 +27,8 @@
         "./typings/angularjs/angular.d.ts",
         "./typings/jquery/jquery.d.ts"
     ],
-    "compileOnSave": false
+    "compileOnSave": false,
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }
