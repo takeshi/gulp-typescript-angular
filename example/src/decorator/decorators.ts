@@ -19,4 +19,8 @@ module sample {
         angularModule.directive(clazz.$componentName, args);
     }
 
+    export function Component(clazz: any) {
+        angularModule.component(clazz.$componentName, new clazz());
+    }
+
 }

@@ -20,4 +20,8 @@ var sample;
         angularModule.directive(clazz.$componentName, args);
     }
     sample.Directive = Directive;
+    function Component(clazz) {
+        angularModule.component(clazz.$componentName, new clazz());
+    }
+    sample.Component = Component;
 })(sample || (sample = {}));

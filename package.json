@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/takeshi/gulp-typescript-angular",
   "dependencies": {
-    "falafel": "^1.0.1",
+    "falafel": "^1.2.0",
     "gulp": "^3.8.11",
     "gulp-typescript": "^2.5.0",
     "through2": "^0.6.3"
