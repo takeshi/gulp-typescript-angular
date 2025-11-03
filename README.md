@@ -463,3 +463,125 @@ var sample;
 angular.module('sample').directive('sample',['$compile',function(){return new SampleDirective(arguments);}]);
 })(sample || (sample = {}));
 ```
+
+## 3. ES6 Module Support
+gulp-typescript-angular now supports ES6 modules! You can use `export` statements without wrapping your code in TypeScript internal modules.
+
+### 3.1 modify gulpfile.js
+When using ES6 modules, configure TypeScript to output CommonJS or ES6 modules and use gulp-typescript-angular with the `moduleName` option.
+
+```javascript
+var gulp = require('gulp');
+var typescript = require('gulp-typescript');
+var typescriptAngular = require('gulp-typescript-angular');
+
+gulp.task('scripts', function () {
+  return gulp.src('./**/*.ts')
+    .pipe(typescript({
+      target: 'es5',
+      module: 'commonjs'  // or 'es6' for ES6 modules
+    }))
+    .pipe(typescriptAngular({
+      moduleName: 'sample'
+    }))
+    .pipe(gulp.dest('./dist'));
+});
+```
+
+### 3.2 Examples
+
+### 3.2.1 Controller
+ES6 modules use `export` statements instead of wrapping code in internal modules.
+
+#### TypeScript
+```typescript
+export class SampleController {
+    constructor(public $scope: angular.IScope) {
+        console.log('SampleController initialized');
+    }
+}
+```
+
+#### Compiled JavaScript
+```javascript
+"use strict";
+var SampleController = (function () {
+    function SampleController($scope) {
+        this.$scope = $scope;
+        console.log('SampleController initialized');
+    }/*<auto_generate>*/SampleController.$inject = ['$scope']; SampleController.$componentName = 'SampleController'/*</auto_generate>*/
+    return SampleController;
+}());/*<auto_generate>*/angular.module('sample').controller('SampleController',SampleController);/*</auto_generate>*/
+exports.SampleController = SampleController;
+```
+
+### 3.2.2 Service
+Services work the same way with ES6 modules.
+
+#### TypeScript
+```typescript
+export class SampleService {
+    constructor(public $q: angular.IQService) {
+    }
+    
+    getData() {
+        return this.$q.when({ data: 'test' });
+    }
+}
+```
+
+#### Compiled JavaScript
+```javascript
+"use strict";
+var SampleService = (function () {
+    function SampleService($q) {
+        this.$q = $q;
+    }/*<auto_generate>*/SampleService.$inject = ['$q']; SampleService.$componentName = 'sampleService'/*</auto_generate>*/
+    SampleService.prototype.getData = function () {
+        return this.$q.when({ data: 'test' });
+    };
+    return SampleService;
+}());/*<auto_generate>*/angular.module('sample').service('sampleService',SampleService);/*</auto_generate>*/
+exports.SampleService = SampleService;
+```
+
+### 3.2.3 Directive
+Directives also work with ES6 modules.
+
+#### TypeScript
+```typescript
+export class SampleDirective {
+    restrict = 'A'
+    templateUrl = '/sample.html'
+    scope = {
+        text: '='
+    }
+
+    constructor(public $compile: angular.ICompileService) {
+    }
+
+    link(scope: angular.IScope, element: JQuery, attr: angular.IAttributes) {
+        // directive logic
+    }
+}
+```
+
+#### Compiled JavaScript
+```javascript
+"use strict";
+var SampleDirective = (function () {
+    function SampleDirective($compile) {
+        this.$compile = $compile;
+        this.restrict = 'A';
+        this.templateUrl = '/sample.html';
+        this.scope = {
+            text: '='
+        };
+    }/*<auto_generate>*/SampleDirective.$inject = ['$compile']; SampleDirective.$componentName = 'sample'/*</auto_generate>*/
+    SampleDirective.prototype.link = function (scope, element, attr) {
+        // directive logic
+    };
+    return SampleDirective;
+}());/*<auto_generate>*/angular.module('sample').directive('sample',['$compile',function(){return new (Function.prototype.bind.apply(SampleDirective,[null].concat(Array.prototype.slice.call(arguments))));}]);/*</auto_generate>*/
+exports.SampleDirective = SampleDirective;
+```

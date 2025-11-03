@@ -66,7 +66,15 @@ function findClassDeclaration(node, opts) {
         if (!decl.init.callee.body) {
             return;
         }
+        // Check if this is an ES6 module pattern (not wrapped in internal module IIFE)
+        // ES6 modules have the constructor as the first statement in the body
+        var isES6Module = isES6ModulePattern(decl);
         if (opts.decorator) {
+            if (isES6Module) {
+                // ES6 modules don't use decorators in the traditional sense
+                // Skip decorator processing for ES6 modules
+                return;
+            }
             var decorators = findDecorator(decl);
             decorators.forEach(function (decorator) {
                 opts.decoratorPatterns.forEach(function (decoratorPattern) {
@@ -84,6 +92,20 @@ function findClassDeclaration(node, opts) {
             });
         }
     }
+}
+function isES6ModulePattern(decl) {
+    // ES6 modules have the class constructor directly in the body
+    // Internal modules wrap the class in another IIFE
+    var body = decl.init.callee.body;
+    if (!body || !body.body || body.body.length < 2) {
+        return false;
+    }
+    // In ES6 modules, the first statement is the constructor FunctionDeclaration
+    // and it has the same name as the variable
+    var firstStatement = body.body[0];
+    return firstStatement.type === 'FunctionDeclaration' &&
+        firstStatement.id &&
+        firstStatement.id.name === decl.id.name;
 }
 function findDecorator(decl) {
     var body = decl.init.callee.body;
