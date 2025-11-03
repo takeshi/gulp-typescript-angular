@@ -71,8 +71,8 @@ function findClassDeclaration(node, opts) {
         var isES6Module = isES6ModulePattern(decl);
         if (opts.decorator) {
             if (isES6Module) {
-                // ES6 modules don't use decorators in the traditional sense
-                // Skip decorator processing for ES6 modules
+                // Skip the plugin's internal module decorator processing for ES6 modules
+                // The decorator pattern in this plugin is designed for internal modules
                 return;
             }
             var decorators = findDecorator(decl);
@@ -105,6 +105,9 @@ function isES6ModulePattern(decl) {
     var firstStatement = body.body[0];
     return firstStatement.type === 'FunctionDeclaration' &&
         firstStatement.id &&
+        firstStatement.id.name &&
+        decl.id &&
+        decl.id.name &&
         firstStatement.id.name === decl.id.name;
 }
 function findDecorator(decl) {
