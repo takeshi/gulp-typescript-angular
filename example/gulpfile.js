@@ -37,8 +37,25 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest('./dist/naming_rule'));
 });
 
+gulp.task('scripts-es6', function () {
+  return gulp.src(
+    [
+     './src/es6_module/*.ts',
+     './typings/**/*.d.ts'
+    ])
+    .pipe(typescript({
+     target:'es5',
+     module:'commonjs'
+    }))
+    .pipe(typescriptAngular({
+      moduleName:'sample'
+    }))
+    .pipe(gulp.dest('./dist/es6_module'));
+});
+
 gulp.task('default', function () {
     gulp.start('scripts');
     gulp.start('scripts-decorator');
+    gulp.start('scripts-es6');
 
 });
