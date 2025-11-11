@@ -23,6 +23,11 @@ interface Options {
   decoratorPatterns?: DecoratorPattern[];
   decoratorModuleName?: string;
   decorator?: boolean;
+  falafelOptions?: {
+    ecmaVersion?: 3 | 5 | 6 | 7 | 8;
+    sourceType?: 'script' | 'module';
+    tolerant: boolean;
+  };
 }
 
 function setDefaultValue(opts: Options) {
@@ -58,6 +63,12 @@ function setDefaultValue(opts: Options) {
     ];
   }
 
+  if (typeof opts.falafelOptions === 'undefined') {
+    opts.falafelOptions = {
+        sourceType: 'script',
+        tolerant: true
+    };
+  }
 }
 
 module.exports = function angularify(opts: Options) {
@@ -123,7 +134,7 @@ interface DecoratorBlock{
 }
 
 function transform(contents: string, opts: Options): string {
-  return falafel(contents, { tolerant: true }, function(node: Node) {
+  return falafel(contents, opts.falafelOptions, function(node: Node) {
     findClassDeclaration(node, opts);
   }).toString();
 }
@@ -266,7 +277,7 @@ function addAngularModule(node:Node, decl:Declaration, opts:Options, ptn:Pattern
   }
 
   function createModule() {
-    constructorParams.push(`function(){return new (Function.prototype.bind.apply(${className},[null].concat(Array.prototype.slice.call(arguments))));}`);    
+    constructorParams.push(`function(){return new (Function.prototype.bind.apply(${className},[null].concat(Array.prototype.slice.call(arguments))));}`);
     var source = '';
     source += `angular.module('${moduleName}')`;
     source += `.${type}('${conponentName}',[${constructorParams.join('\,')}]);`;

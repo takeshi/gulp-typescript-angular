@@ -1,7 +1,8 @@
 /// <reference path="./typings/tsd.d.ts"/>
 'use strict';
-var through = require('through2');
-var falafel = require('falafel');
+Object.defineProperty(exports, "__esModule", { value: true });
+var through = require("through2");
+var falafel = require("falafel");
 function setDefaultValue(opts) {
     if (typeof opts.ignore === 'undefined') {
         opts.ignore = /^\$/;
@@ -31,6 +32,12 @@ function setDefaultValue(opts) {
             { pattern: /Directive$/, func: 'Directive', removePattern: true, firstLowerCase: true }
         ];
     }
+    if (typeof opts.falafelOptions === 'undefined') {
+        opts.falafelOptions = {
+            sourceType: 'script',
+            tolerant: true
+        };
+    }
 }
 module.exports = function angularify(opts) {
     opts = opts || {};
@@ -38,6 +45,7 @@ module.exports = function angularify(opts) {
     // creating a stream through which each file will pass
     var stream = through.obj(function (file, enc, cb) {
         if (file.isNull()) {
+            // do nothing
         }
         if (file.isBuffer()) {
             var contents = file.contents.toString();
@@ -51,7 +59,7 @@ module.exports = function angularify(opts) {
     return stream;
 };
 function transform(contents, opts) {
-    return falafel(contents, { tolerant: true }, function (node) {
+    return falafel(contents, opts.falafelOptions, function (node) {
         findClassDeclaration(node, opts);
     }).toString();
 }
